@@ -63,3 +63,36 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+
+const galleryContainer = document.querySelector('.js-gallery');
+const cardsMarcup = createImageCards(galleryItems);
+
+//Добавление элементов списка в список (внутри списка в конец)
+galleryContainer.insertAdjacentHTML('beforeend', cardsMarcup);
+
+//Шаблон карточки галереи (элемента списка)
+function createImageCards(galleryItems) {
+  return galleryItems.map(({preview, original, description}) => {
+    return `<li class="gallery__item">
+      <a class="gallery__link" href='${original}'>
+        <img
+          class="gallery__image"
+          src='${preview}'
+          data-source='${original}'
+          alt='${description}'
+        />
+      </a>
+    </li>`;
+  }).join('');
+};
+
+//Вешаю обработчик события на список (ul) при клике на элементе списка !!!!
+function onGalleryContainerClick(event) {
+  event.target.classList.contains('gallery__item');
+  if (!event.target.classList.contains('gallery__item')) {
+    return;
+  };
+  console.log(event.target.dataset);
+};
+
