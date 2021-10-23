@@ -76,6 +76,7 @@ galleryContainerRef.insertAdjacentHTML('beforeend', cardsMarcup);
 galleryContainerRef.addEventListener('click', onlOpenModal);
 btnCloseModalRef.addEventListener('click', onCloseModal);
 modalOverlayRef.addEventListener('click', onCloseModal);
+window.addEventListener ('keydown', onCloseModalESC)
 
 function createImageCards(galleryItems) {
   return galleryItems.map(({preview, original, description}) => {
@@ -106,8 +107,9 @@ function onCloseModal () {
   modalImageRef.src = '';
 }
 
-window.addEventListener ('keydown', (event) => {
+function onCloseModalESC (event) {
   if (event.code === 'Escape') {
     onCloseModal();
-  }
-});
+  };
+};
+
