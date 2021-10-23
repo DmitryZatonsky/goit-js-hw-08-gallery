@@ -70,13 +70,19 @@ const modalRef = document.querySelector('.lightbox');
 const modalImageRef = document.querySelector('.lightbox__image');
 const btnCloseModalRef = document.querySelector('[data-action="close-lightbox"]');
 const modalOverlayRef = document.querySelector('.lightbox__overlay');
+const imgListRef = document.querySelectorAll('.gallery__image');
+
+const imagesListSrc = galleryItems.map((el) => el.original);
+const imagesListAlt = galleryItems.map((el) => el.description);
 const cardsMarcup = createImageCards(galleryItems);
 
 galleryContainerRef.insertAdjacentHTML('beforeend', cardsMarcup);
 galleryContainerRef.addEventListener('click', onlOpenModal);
 btnCloseModalRef.addEventListener('click', onCloseModal);
 modalOverlayRef.addEventListener('click', onCloseModal);
-window.addEventListener ('keydown', onCloseModalESC)
+window.addEventListener('keydown', onCloseModalEsc)
+window.addEventListener('keydown', nextImgSrc);
+window.addEventListener('keydown', previousImgSrc);
 
 function createImageCards(galleryItems) {
   return galleryItems.map(({preview, original, description}) => {
@@ -107,9 +113,20 @@ function onCloseModal () {
   modalImageRef.src = '';
 }
 
-function onCloseModalESC (event) {
+function onCloseModalEsc (event) {
   if (event.code === 'Escape') {
     onCloseModal();
   };
 };
 
+function nextImgSrc(event) {
+  if (event.code === "ArrowRight") {
+      modalImageRef.src = imagesListSrc[imagesListSrc.indexOf(modalImageRef.src) + 1]
+  };
+};
+
+function previousImgSrc (event) {
+  if (event.code === "ArrowLeft") {
+      modalImageRef.src = imagesListSrc[imagesListSrc.indexOf(modalImageRef.src) - 1]
+  };
+};
