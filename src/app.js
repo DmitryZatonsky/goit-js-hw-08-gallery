@@ -65,13 +65,18 @@ const galleryItems = [
 ];
 
 
-const galleryContainer = document.querySelector('.js-gallery');
+const galleryContainerRef = document.querySelector('.js-gallery');
+const modalRef = document.querySelector('.lightbox');
+const modalImageRef = document.querySelector('.lightbox__image');
+const btnCloseModalRef = document.querySelector('[data-action="close-lightbox"]');
+const modalOverlayRef = document.querySelector('.lightbox__overlay');
 const cardsMarcup = createImageCards(galleryItems);
 
-//Добавление элементов списка в список (внутри списка в конец)
-galleryContainer.insertAdjacentHTML('beforeend', cardsMarcup);
+galleryContainerRef.insertAdjacentHTML('beforeend', cardsMarcup);
+galleryContainerRef.addEventListener('click', onlOpenModal);
+btnCloseModalRef.addEventListener('click', onCloseModal);
+modalOverlayRef.addEventListener('click', onCloseModal);
 
-//Шаблон карточки галереи (элемента списка)
 function createImageCards(galleryItems) {
   return galleryItems.map(({preview, original, description}) => {
     return `<li class="gallery__item">
@@ -87,12 +92,22 @@ function createImageCards(galleryItems) {
   }).join('');
 };
 
-//Вешаю обработчик события на список (ul) при клике на элементе списка !!!!
-function onGalleryContainerClick(event) {
-  event.target.classList.contains('gallery__item');
-  if (!event.target.classList.contains('gallery__item')) {
+function onlOpenModal(event) {
+  event.preventDefault()
+  if (event.target.nodeName !== 'IMG') {
     return;
   };
-  console.log(event.target.dataset);
+  modalRef.classList.add('is-open');
+  modalImageRef.src = event.target.dataset.source
 };
 
+function onCloseModal () {
+  modalRef.classList.remove('is-open');
+  modalImageRef.src = '';
+}
+
+window.addEventListener ('keydown', (event) => {
+  if (event.code === 'Escape') {
+    onCloseModal();
+  }
+});
