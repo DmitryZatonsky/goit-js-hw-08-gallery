@@ -127,8 +127,6 @@ function onNextImgSrc (event) {
     currentIndex += 1;
     modalImageRef.src = imgListSrc[currentIndex];
 
-    console.log(currentIndex);
-
     if (currentIndex > imgListSrc.length - 1) {
       modalImageRef.src = imgListSrc[0];
     };
