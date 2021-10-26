@@ -72,17 +72,18 @@ const btnCloseModalRef = document.querySelector('[data-action="close-lightbox"]'
 const modalOverlayRef = document.querySelector('.lightbox__overlay');
 const imgListRef = document.querySelectorAll('.gallery__image');
 
-const imagesListSrc = galleryItems.map((el) => el.original);
-const imagesListAlt = galleryItems.map((el) => el.description);
 const cardsMarcup = createImageCards(galleryItems);
+const imgListSrc = galleryItems.map((el) => el.original);
+
 
 galleryContainerRef.insertAdjacentHTML('beforeend', cardsMarcup);
 galleryContainerRef.addEventListener('click', onlOpenModal);
 btnCloseModalRef.addEventListener('click', onCloseModal);
 modalOverlayRef.addEventListener('click', onCloseModal);
 window.addEventListener('keydown', onCloseModalEsc)
-window.addEventListener('keydown', nextImgSrc);
-window.addEventListener('keydown', previousImgSrc);
+window.addEventListener('keydown', onNextImgSrc);
+window.addEventListener('keydown', onPreviousImgSrc);
+
 
 function createImageCards(galleryItems) {
   return galleryItems.map(({preview, original, description}) => {
@@ -119,14 +120,30 @@ function onCloseModalEsc (event) {
   };
 };
 
-function nextImgSrc(event) {
+function onNextImgSrc (event) {
   if (event.code === "ArrowRight") {
-      modalImageRef.src = imagesListSrc[imagesListSrc.indexOf(modalImageRef.src) + 1]
+
+    let currentIndex = imgListSrc.indexOf(modalImageRef.src);
+    currentIndex += 1;
+    modalImageRef.src = imgListSrc[currentIndex];
+
+    console.log(currentIndex);
+
+    if (currentIndex > imgListSrc.length - 1) {
+      modalImageRef.src = imgListSrc[0];
+    };
   };
 };
 
-function previousImgSrc (event) {
+function onPreviousImgSrc (event) {
   if (event.code === "ArrowLeft") {
-      modalImageRef.src = imagesListSrc[imagesListSrc.indexOf(modalImageRef.src) - 1]
+
+    let currentIndex = imgListSrc.indexOf(modalImageRef.src);
+    currentIndex -= 1;
+    modalImageRef.src = imgListSrc[currentIndex];
+
+    if (currentIndex < 0) {
+      modalImageRef.src = imgListSrc[imgListSrc.length - 1];
+    };
   };
 };
